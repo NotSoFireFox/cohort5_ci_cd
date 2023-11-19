@@ -50,25 +50,6 @@ Resources:
             Action: 's3:GetObject'
             Resource: !Join ['', ["arn:aws:s3:::", !Ref WebsiteBucket, "/*"]]
 
-  # Repository:   
-  #   Type: "AWS::CodeCommit::Repository"
-  #   DependsOn: SNSRepoTrigger
-  #   Properties:
-  #     RepositoryName: !Sub ${ProjectName}
-  #     Triggers:
-  #     - Name: MasterTrigger
-  #       CustomData: !Ref "AWS::StackName"
-  #       DestinationArn: !Ref SNSRepoTrigger
-  #       Branches:
-  #       - main
-  #       Events:
-  #       - all
-
-  # SNSRepoTrigger:
-  #   Type: "AWS::SNS::Topic"
-  #   Properties:
-  #     DisplayName: !Ref ProjectName
-  #     TopicName: !Ref ProjectName
 
   PipelineRole:  
     Type: AWS::IAM::Role  
@@ -209,23 +190,7 @@ Resources:
                 Repo: !Ref GithubRepo
                 OAuthToken: !Ref GithubAccessToken
                 Branch: main  
-
-        # - Name: CodeCommitSource  
-        #   Actions:  
-        #     - InputArtifacts: []  
-        #       Name: code  
-        #       RunOrder: 1  
-        #       ActionTypeId:  
-        #         Category: Source  
-        #         Owner: AWS  
-        #         Version: 1  
-        #         Provider: CodeCommit  
-        #       OutputArtifacts:  
-        #         - Name: CodeWorkspace  
-        #       Configuration:  
-        #         RepositoryName: !Sub ${ProjectName}-Repo
-        #         BranchName: main  
-        #         PollForSourceChanges: "true"             
+      
                 
         - Name: DEVELOP
           Actions:  
